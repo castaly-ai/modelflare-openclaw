@@ -21,7 +21,8 @@ export {
   type ErrorKind,
   type ModelflareErrorDetails,
 } from './errors.js'
-export { generateImage, modelDocsUrl, type GeneratedImage, type ImageCall } from './images.js'
+export { modelDocsUrl } from './docs.js'
+export { generateImage, type GeneratedImage, type ImageCall } from './images.js'
 export {
   ROUTING_STRATEGY_HINT,
   SMART_KEY_HINT,
@@ -29,6 +30,7 @@ export {
   type DescribeOptions,
   type Locale,
 } from './messages.js'
+export { describeErrorEn, type DescribeEnglishOptions } from './messages-en.js'
 export {
   ModelDirectory,
   classifyModels,

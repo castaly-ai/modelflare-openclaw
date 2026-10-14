@@ -1,6 +1,6 @@
 {
   "name": "@modelflare/openclaw-provider",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Modelflare model provider for OpenClaw: one Smart API Key for every model available to your account.",
   "license": "MIT",
   "author": "Havenbyte LLC",
