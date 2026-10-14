@@ -4,7 +4,7 @@
   "description": "Modelflare model provider for OpenClaw: one Smart API Key for every model available to your account.",
   "license": "MIT",
   "author": "Havenbyte LLC",
-  "homepage": "https://modelflare.dev/sign-up?utm_source=clawhub&utm_medium=plugin&utm_campaign=integrations",
+  "homepage": "https://modelflare.dev",
   "type": "module",
   "files": [
     "dist",
@@ -42,5 +42,12 @@
     "esbuild": "0.28.2",
     "openclaw": "2026.10.2",
     "typescript": "6.0.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/castaly-ai/modelflare-openclaw"
+  },
+  "bugs": {
+    "url": "https://github.com/castaly-ai/modelflare-openclaw/issues"
   }
 }
