@@ -4,7 +4,7 @@
   "description": "Modelflare model provider for OpenClaw: one Smart API Key for every model available to your account.",
   "license": "MIT",
   "author": "Havenbyte LLC",
-  "homepage": "https://modelflare.dev",
+  "homepage": "https://modelflare.dev/sign-up?utm_source=clawhub&utm_medium=plugin&utm_campaign=integrations",
   "type": "module",
   "files": [
     "dist",
