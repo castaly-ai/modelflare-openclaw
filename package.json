@@ -1,0 +1,46 @@
+{
+  "name": "@modelflare/openclaw-provider",
+  "version": "0.1.0",
+  "description": "Modelflare model provider for OpenClaw: one Smart API Key for every model available to your account.",
+  "license": "MIT",
+  "author": "Havenbyte LLC",
+  "homepage": "https://modelflare.dev/sign-up?utm_source=clawhub&utm_medium=plugin&utm_campaign=integrations",
+  "type": "module",
+  "files": [
+    "dist",
+    "openclaw.plugin.json",
+    "assets",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "node build.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "pack:check": "npm run build && npm pack --dry-run"
+  },
+  "peerDependencies": {
+    "openclaw": ">=2026.10.2"
+  },
+  "openclaw": {
+    "extensions": [
+      "./dist/index.js"
+    ],
+    "providers": [
+      "modelflare"
+    ],
+    "compat": {
+      "pluginApi": ">=2026.10.2",
+      "minGatewayVersion": "2026.10.2"
+    },
+    "build": {
+      "openclawVersion": "2026.10.2",
+      "pluginSdkVersion": "2026.10.2"
+    }
+  },
+  "devDependencies": {
+    "@types/node": "25.9.1",
+    "esbuild": "0.28.2",
+    "openclaw": "2026.10.2",
+    "typescript": "6.0.3"
+  }
+}

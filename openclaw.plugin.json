@@ -1,0 +1,37 @@
+{
+  "id": "modelflare",
+  "name": "Modelflare",
+  "description": "One Modelflare Smart API Key for every model available to your account: GPT, Claude, Gemini and more.",
+  "providers": ["modelflare"],
+  "setup": {
+    "providers": [
+      {
+        "id": "modelflare",
+        "envVars": ["MODELFLARE_API_KEY"]
+      }
+    ]
+  },
+  "providerAuthChoices": [
+    {
+      "provider": "modelflare",
+      "method": "api-key",
+      "choiceId": "modelflare-api-key",
+      "choiceLabel": "Modelflare Smart API Key",
+      "groupId": "modelflare",
+      "groupLabel": "Modelflare",
+      "cliFlag": "--modelflare-api-key",
+      "cliOption": "--modelflare-api-key <key>",
+      "cliDescription": "Modelflare Smart API Key"
+    }
+  ],
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "baseUrl": {
+        "type": "string",
+        "description": "\"global\" (https://modelflare.dev/v1, default), \"china\" (https://origin.modelflare.dev/v1), or a custom base URL."
+      }
+    }
+  }
+}
