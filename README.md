@@ -27,9 +27,9 @@ openclaw onboard --modelflare-api-key <your Smart API Key>
 export MODELFLARE_API_KEY=<your Smart API Key>
 ```
 
-Then pick a model such as `modelflare/<model-id>`. The model list comes from `GET /v1/models` for your key, so new models appear without editing the key.
+Then pick a model such as `modelflare/<model-id>`. The model list comes from `GET /v1/models?scope=authorized` for your key, so new models appear without editing the key.
 
-然后选择 `modelflare/<模型 ID>`。模型列表来自你这把 Key 的 `GET /v1/models`，新模型上线无需改 Key。
+然后选择 `modelflare/<模型 ID>`。模型列表来自你这把 Key 的 `GET /v1/models?scope=authorized`，新模型上线无需改 Key。
 
 | Setting | Value |
 |---|---|
@@ -44,7 +44,8 @@ openclaw config set plugins.entries.modelflare.config.baseUrl china
 
 ## Features / 功能
 
-- Text models available to your key, loaded from `GET /v1/models`; image and video models are left out of the chat picker.
+- Text models available to your key, loaded from `GET /v1/models?scope=authorized`; image and video models are left out of the chat picker.
+- Per-model context window, output limit, reasoning, tool-calling and vision metadata from Modelflare's authenticated profile endpoint; the key is not sent to a third-party metadata service.
 - A model released after the last catalog refresh still works when referenced as `modelflare/<model-id>`.
 - Routing across groups, fallback and the routing strategy are handled by the Smart API Key on the server; nothing to configure in OpenClaw.
 - OpenClaw's cost estimates are not Modelflare prices. Requests are billed by the group that served them; see the usage logs at https://modelflare.dev/usage-logs.

@@ -6,6 +6,7 @@ import {
   SMART_KEY_HINT,
   attributionValue,
   isModelflareError,
+  resolveModelProfile,
   resolveBaseUrl,
   signUpUrl,
   type ClassifiedModel,
@@ -19,17 +20,27 @@ const ATTRIBUTION_PLUGIN = 'modelflare-clawhub'
 const UTM_SOURCE = 'clawhub'
 const VERSION = __MODELFLARE_PLUGIN_VERSION__
 
-// Modelflare does not publish per-model output limits or OpenClaw-style
-// prices. Billing is per routed group and shown in the Modelflare usage logs.
-const DEFAULT_MAX_TOKENS = 8192
+// Billing is per routed group and shown in the Modelflare usage logs, so the
+// provider must not invent OpenClaw-side cost estimates.
 const NO_COST = { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
 
 type TextApi = 'openai-completions' | 'openai-responses'
 
 function textApi(model: ClassifiedModel): TextApi | undefined {
-  if (model.endpoints.includes('openai')) return 'openai-completions'
   if (model.endpoints.includes('openai-response')) return 'openai-responses'
+  if (model.endpoints.includes('openai')) return 'openai-completions'
   return undefined
+}
+
+function modelMetadata(modelId: string, model?: ClassifiedModel) {
+  const profile = model?.profile ?? resolveModelProfile(modelId)
+  const input: Array<'text' | 'image'> = profile.inputModalities.includes('image') ? ['text', 'image'] : ['text']
+  return {
+    reasoning: profile.reasoning,
+    input,
+    contextWindow: profile.contextWindow,
+    maxTokens: profile.maxOutputTokens,
+  }
 }
 
 function configuredBaseUrl(pluginConfig: Record<string, unknown> | undefined): string {
@@ -48,7 +59,7 @@ function directoryFor(apiKey: string, baseUrl: string): ModelDirectory {
   let directory = directories.get(cacheKey)
   if (!directory) {
     directories.clear()
-    directory = new ModelDirectory({ client: clientFor(apiKey, baseUrl) })
+    directory = new ModelDirectory({ client: clientFor(apiKey, baseUrl), includeProfiles: true })
     directories.set(cacheKey, directory)
   }
   return directory
@@ -104,10 +115,8 @@ export default definePluginEntry({
                   id: model.id,
                   name: model.id,
                   api: modelApi,
-                  reasoning: false,
-                  input: ['text' as const],
+                  ...modelMetadata(model.id, model),
                   cost: NO_COST,
-                  maxTokens: DEFAULT_MAX_TOKENS,
                 },
               ]
             })
@@ -129,18 +138,19 @@ export default definePluginEntry({
 
       // Models released after the last catalog refresh still resolve when
       // referenced as modelflare/<model-id>.
-      resolveDynamicModel: (ctx) => ({
-        id: ctx.modelId,
-        name: ctx.modelId,
-        provider: PROVIDER_ID,
-        api: 'openai-completions',
-        baseUrl: ctx.providerConfig?.baseUrl ?? baseUrl,
-        reasoning: false,
-        input: ['text'],
-        cost: NO_COST,
-        maxTokens: DEFAULT_MAX_TOKENS,
-        headers: attributionHeaders,
-      }),
+      resolveDynamicModel: (ctx) => {
+        const metadata = modelMetadata(ctx.modelId)
+        return {
+          id: ctx.modelId,
+          name: ctx.modelId,
+          provider: PROVIDER_ID,
+          api: 'openai-completions',
+          baseUrl: ctx.providerConfig?.baseUrl ?? baseUrl,
+          ...metadata,
+          cost: NO_COST,
+          headers: attributionHeaders,
+        }
+      },
 
       buildMissingAuthMessage: () =>
         `Set ${ENV_VAR} to a Modelflare Smart API Key, or run "openclaw onboard --modelflare-api-key <key>". Create a key at ${KEYS_URL}; no account yet: ${signUpUrl(UTM_SOURCE)}`,

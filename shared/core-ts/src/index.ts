@@ -33,10 +33,15 @@ export {
 export { describeErrorEn, type DescribeEnglishOptions } from './messages-en.js'
 export {
   ModelDirectory,
+  buildModelProfileIndex,
   classifyModels,
   fetchCatalog,
+  fetchModelProfiles,
   listModels,
+  needsCatalog,
+  resolveModelProfile,
   supportsEndpoint,
+  MODEL_PROFILES_PATH,
   type CatalogEntry,
   type ClassifiedModel,
   type DirectorySnapshot,
@@ -45,6 +50,9 @@ export {
   type ModelDirectoryOptions,
   type ModelKind,
   type ModelListEntry,
+  type ModelInputModality,
+  type ModelProfile,
+  type ModelProfileIndex,
 } from './models.js'
 export { signUpUrl } from './signup.js'
 export {

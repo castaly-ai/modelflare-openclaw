@@ -18,6 +18,7 @@ const models: ModelListEntry[] = [
   // anonymous catalog.
   { id: 'gemini-4-flash-image', supported_endpoint_types: ['gemini'] },
   { id: 'wan3.0-video-prime', supported_endpoint_types: ['openai-video'] },
+  { id: 'server-classified-gemini-image', supported_endpoint_types: ['gemini'], kind: 'image', image_route: 'gemini-generate-content' },
 ]
 
 const catalog: CatalogEntry[] = [
@@ -49,6 +50,7 @@ test('Gemini image models go to generateContent, not the chat list', () => {
 test('models missing from the anonymous catalog are classified only when their endpoints are conclusive', () => {
   const result = kinds(classifyModels(models, catalog))
   assert.equal(result['wan3.0-video-prime'], 'video')
+  assert.equal(result['server-classified-gemini-image'], 'image:gemini-generate-content')
   assert.equal(result['gemini-4-flash-image'], undefined, 'a gemini-only model of unknown kind is hidden, never offered as chat')
 })
 
@@ -57,4 +59,5 @@ test('without any catalog no gemini-only model is offered as chat', () => {
   assert.equal(result['gemini-3-pro-image'], undefined)
   assert.equal(result['gemini-3-pro'], 'text')
   assert.equal(result['gpt-image-2'], 'image:images')
+  assert.equal(result['server-classified-gemini-image'], 'image:gemini-generate-content')
 })
